@@ -1,0 +1,6 @@
+run:
+  concurrency: 4
+linters:
+  disable-all: false
+  disable:
+    - typecheck

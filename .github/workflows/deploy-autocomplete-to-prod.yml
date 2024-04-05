@@ -1,7 +1,6 @@
 name: Deploy Autocomplete To Prod
 
 on:
-  pull_request:
   workflow_dispatch:
   push:
     branches:

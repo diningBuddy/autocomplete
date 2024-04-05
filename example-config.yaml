@@ -1,4 +1,4 @@
 addr: localhost:3000
 searchAutocompleteRedis:
-  addr: localhost:6379
+  addr: skku-redis:6379
   password:

@@ -40,16 +40,14 @@ type Item struct {
 }
 
 type MinimalItem struct {
-	OrgDisplay         string       `json:"org_display"`
-	HighlightedDisplay string       `json:"highlighted_display"`
-	DataType           string       `json:"data_type"`
-	Info               *MinimalInfo `json:"info,omitempty"`
+	OrgDisplay         string `json:"org_display"`
+	HighlightedDisplay string `json:"highlighted_display"`
 }
 
 type MinimalInfo struct {
 	SearchKeyword *string `json:"search_keyword,omitempty"`
 
-	// commerce category
+	// restaurant category
 	OldCode           *string `json:"old_code,omitempty"`
 	DisplayCategoryId *int64  `json:"display_category_id,omitempty"`
 
@@ -66,16 +64,6 @@ func (i Item) WithMinimalInfo() MinimalItem {
 	return MinimalItem{
 		OrgDisplay:         i.OrgDisplay,
 		HighlightedDisplay: i.HighlightedDisplay,
-		DataType:           i.DataType,
-		Info: &MinimalInfo{
-			SearchKeyword:     i.Info.SearchKeyword,
-			OldCode:           i.Info.OldCode,
-			DisplayCategoryId: i.Info.ID,
-			ContentUrl:        i.Info.ContentUrl,
-			IconFileUrl:       i.Info.IconFileUrl,
-			CTA:               i.Info.CTA,
-			OID:               i.Info.OID,
-		},
 	}
 }
 
@@ -88,7 +76,7 @@ type Info struct {
 	Keywords    *string `json:"keywords,omitempty"`
 	Keyword     *string `json:"keyword,omitempty"`
 
-	// commerce category
+	// restaurant category
 	CategoryID      *string `json:"category_id,omitempty"`
 	UserCntLong     *int64  `json:"user_cnt_long,omitempty"`
 	UserCntShort    *int64  `json:"user_cnt_short,omitempty"`
@@ -129,5 +117,5 @@ func GetItems(raw []byte) (res Items, err error) {
 }
 
 type Version struct {
-	Commerce map[string]string
+	Restaurant map[string]string
 }

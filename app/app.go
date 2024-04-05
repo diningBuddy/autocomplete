@@ -61,7 +61,7 @@ func (a *App) Initialize(config *config.Properties) {
 func (a *App) setRouters() {
 	a.Get("/healthcheck", a.handleRequest(handler.HealthCheck))
 
-	a.Get("/commerce", a.handleRequest(handler.CommerceAutocomplete))
+	a.Get("/restaurant", a.handleRequest(handler.RestaurantAutocomplete))
 }
 
 func (a *App) setMiddlewares(f func(http.Handler) http.Handler) {
@@ -72,33 +72,33 @@ func (a *App) setVersion() {
 	var cv map[string]string
 
 	cv = map[string]string{}
-	for _, v := range handler.CommerceKeyVersions {
-		rv, err := a.Redis.Search.Get("commerce:" + v + ":version").Result()
+	for _, v := range handler.RestaurantKeyVersions {
+		rv, err := a.Redis.Search.Get("restaurant:" + v + ":version").Result()
 
-		if err != nil && v == handler.CommerceVersion {
-			log.Errorf("failed to get default commerce version with err : %s", err.Error())
+		if err != nil && v == handler.RestaurantVersion {
+			log.Errorf("failed to get default restaurant version with err : %s", err.Error())
 		}
 		cv[v] = rv
-		log.Debugf("commerce version : %s", rv)
+		log.Debugf("restaurant version : %s", rv)
 	}
 
 	a.Version = &model.Version{
-		Commerce: cv,
+		Restaurant: cv,
 	}
 }
 
 func (a *App) runVersionChecker() {
 	for range time.Tick(time.Minute * 1) {
-		for _, v := range handler.CommerceKeyVersions {
-			com, err := a.Redis.Search.Get("commerce:" + v + ":version").Result()
+		for _, v := range handler.RestaurantKeyVersions {
+			com, err := a.Redis.Search.Get("restaurant:" + v + ":version").Result()
 			if err != nil {
 				log.Error(err.Error())
 				continue
 			}
-			if com != a.Version.Commerce[v] {
-				log.Infof("setting commerce version %s : %s", v, com)
+			if com != a.Version.Restaurant[v] {
+				log.Infof("setting restaurant version %s : %s", v, com)
 				a.m.Lock()
-				a.Version.Commerce[v] = com
+				a.Version.Restaurant[v] = com
 				a.m.Unlock()
 			}
 		}

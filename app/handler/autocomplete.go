@@ -16,13 +16,13 @@ import (
 )
 
 var (
-	CommerceKeyVersions = [...]string{"v4"}
+	RestaurantKeyVersions = [...]string{"v1"}
 )
 
 const (
-	CommerceVersion = "v4" // parameterVersion "" or "v1"
+	RestaurantVersion = "v1" // parameterVersion "" or "v1"
 
-	commerceService = "commerce"
+	restaurantService = "restaurant"
 )
 
 func getItems(ctx context.Context, rd *redis.Client, key string) (model.Items, error) {
@@ -78,11 +78,6 @@ func autocomplete(
 	versions map[string]string,
 	rerankfunc func(string, model.Items) model.Items,
 ) (model.Items, error) {
-	if version == "v1" { // TODO : 트래픽 없어지면 아예 삭제
-		if key == commerceService {
-			return model.Items{}, nil
-		}
-	}
 	if query == "" {
 		return model.Items{}, nil
 	}
@@ -105,22 +100,14 @@ func autocomplete(
 	return items, nil
 }
 
-func CommerceAutocomplete(rd *model.AutocompleteRedis, v *model.Version, w http.ResponseWriter, r *http.Request) {
+func RestaurantAutocomplete(rd *model.AutocompleteRedis, v *model.Version, w http.ResponseWriter, r *http.Request) {
 	query := r.FormValue("query")
 
 	ctx := convertHeaderToContext(r)
-	version := CommerceVersion
-	res, err := autocomplete(ctx, rd.Search, query, commerceService, version, v.Commerce, nil)
+	version := RestaurantVersion
+	res, err := autocomplete(ctx, rd.Search, query, restaurantService, version, v.Restaurant, nil)
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	if strings.ToLower(r.FormValue("debug")) == "true" {
-		respondJSON(w, http.StatusOK, model.Autocomplete{
-			Query:   query,
-			Results: res,
-		})
 		return
 	}
 

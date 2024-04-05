@@ -12,7 +12,7 @@ func HealthCheck(rd *model.AutocompleteRedis, v *model.Version, w http.ResponseW
 
 	respondJSON(w, http.StatusOK, map[string]interface{}{
 		"versions": map[string]interface{}{
-			"commerce": v.Commerce,
+			"restaurant": v.Restaurant,
 		},
 	})
 }

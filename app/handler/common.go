@@ -9,6 +9,8 @@ import (
 
 // respondJSON makes the response with payload as json format
 func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	response, err := json.Marshal(payload)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

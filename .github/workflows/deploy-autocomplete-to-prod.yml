@@ -28,5 +28,5 @@ jobs:
             docker login -u ${{ secrets.USERNAME }} -p ${{ secrets.PASSWORD }}
             docker pull sinkyoungdeok/skku-autocomplete
 
-            docker-compose build skku-autocomplete
-            docker-compose up -d skku-autocomplete
+            docker compose build skku-autocomplete
+            docker compose up -d skku-autocomplete

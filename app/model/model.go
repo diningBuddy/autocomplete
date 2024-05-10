@@ -37,11 +37,13 @@ type Item struct {
 	IsDuplicated       bool      `json:"is_duplicated"`
 	HighlightedDisplay string    `json:"highlighted_display"`
 	MatchBoosting      int64     `json:"match_boosting"`
+	Category           string    `json:"category,omitempty"`
 }
 
 type MinimalItem struct {
 	OrgDisplay         string `json:"org_display"`
 	HighlightedDisplay string `json:"highlighted_display"`
+	Category           string `json:"category,omitempty"`
 }
 
 type MinimalInfo struct {
@@ -64,6 +66,7 @@ func (i Item) WithMinimalInfo() MinimalItem {
 	return MinimalItem{
 		OrgDisplay:         i.OrgDisplay,
 		HighlightedDisplay: i.HighlightedDisplay,
+		Category:           i.Category,
 	}
 }
 
